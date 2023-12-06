@@ -21,9 +21,7 @@ import javax.validation.constraints.Pattern;
  * @Author: Wen-Tao
  * @since: 2.2
  */
-@Table(name ="goods_manage crud", indexes = {
-    @Index(name = "idx_goods_name", columnList = "goods_name")
-})
+@Table(name ="goods_manage")
 @Getter
 @Setter
 @Schema(description = "商品管理表")
