@@ -33,11 +33,11 @@ public class GoodsManageEntity extends GenericEntity<String> implements RecordCr
     @Schema(description = "商品名称")
     private String goodsName;
 
-    @Column(length = 64)
+    @Column(length = 64,nullable = false)
     @Schema(description = "商品类型")
     private String goodsType;
 
-    @Column(length = 64)
+    @Column(length = 64,nullable = false)
     @Pattern(regexp = "[A-Za-z]{3}@[0-9]{2}", message = "批次格式只能是3位字母+@+2位数字", groups = CreateGroup.class)
     @Schema(description = "商品批次")
     private String goodsBatch;
