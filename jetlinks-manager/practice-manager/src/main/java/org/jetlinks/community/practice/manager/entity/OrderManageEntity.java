@@ -18,6 +18,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单管理类，用于封装订单相关的信息,如流水号，订单类型，订单状态等
@@ -39,7 +41,7 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
 
     @Column(length = 64, nullable = false,updatable = false)
     @Schema(description = "商品id")
-    private String goodsId;
+    private List<String> goodsIds;
 
     @Column(length = 32, nullable = false)
     @Schema(description = "订单类型")
@@ -79,11 +81,11 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     }
 
     public void generateId() {
-        String id = generateHexId(orderSerialNumber, goodsId);
+        String id = generateHexId(orderSerialNumber, goodsIds);
         setId(id);
     }
 
-    public static String generateHexId(String orderSerialNumber, String goodsId) {
-        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodsId));
+    public static String generateHexId(String orderSerialNumber, List<String> goodIds) {
+        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodIds.stream().collect(Collectors.joining(",","{","}"))));
     }
 }
