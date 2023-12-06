@@ -6,18 +6,18 @@ import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.ezorm.rdb.mapping.annotation.EnumCodec;
+import org.hswebframework.ezorm.rdb.mapping.annotation.JsonCodec;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 import org.hswebframework.web.api.crud.entity.RecordCreationEntity;
 import org.hswebframework.web.api.crud.entity.RecordModifierEntity;
 import org.hswebframework.web.crud.annotation.EnableEntityEvent;
 import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.utils.DigestUtils;
+
 import org.jetlinks.community.practice.manager.enums.OrderStatus;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.JDBCType;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,9 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     private String orderSerialNumber;
 
     @Column(length = 64, nullable = false,updatable = false)
-    @Schema(description = "商品id")
+    @Schema(description = "商品ids")
+    @ColumnType(javaType = String.class,jdbcType = JDBCType.LONGVARCHAR)
+    @JsonCodec
     private List<String> goodsIds;
 
     @Column(length = 32, nullable = false)
