@@ -18,8 +18,8 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 商品管理类，用于封装商品管理相关的信息 如 商品名称，商品分类，商品批次等。
- * @Author: Wen-Tao
- * @since: 2.2
+ * @author Wen-Tao
+ * @since 2.2
  */
 @Table(name ="goods_manage")
 @Getter

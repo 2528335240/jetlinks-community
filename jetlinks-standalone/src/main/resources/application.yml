@@ -219,6 +219,10 @@ springdoc:
         - org.hswebframework.web.file
         - org.hswebframework.web.authorization.basic.web
         - org.jetlinks.community.logging.controller
+    -  group: 练习模块相关接口
+       packages-to-scan:
+        - org.jetlinks.community.practice.manager.controller
+
   cache:
     disabled: false
 network:

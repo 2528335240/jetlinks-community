@@ -6,8 +6,8 @@ import org.hswebframework.web.dict.I18nEnumDict;
 
 /**
  * 订单状态枚举类，包括未付款、付款成功、确认收货的状态
- * @Author: Wen-Tao
- * @since: 2.2
+ * @author Wen-Tao
+ * @since 2.2
  */
 @Getter
 @AllArgsConstructor

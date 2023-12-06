@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 
 /**
  * 订单管理类，用于封装订单相关的信息,如流水号，订单类型，订单状态等
- * @Author: Wen-Tao
- * @since: 2.2
- * @see: OrderStatus
+ * @author Wen-Tao
+ * @since 2.2
+ * @see OrderStatus
  */
 @Table(name ="order_manage")
 @Getter
