@@ -15,6 +15,7 @@ import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.utils.DigestUtils;
 
 import org.jetlinks.community.practice.manager.enums.OrderStatus;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.sql.JDBCType;
@@ -76,7 +77,7 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
 
     @Override
     public String getId() {
-        if (super.getId() == null) {
+        if (super.getId() == null || (!StringUtils.hasText(super.getId()))) {
             generateId();
         }
         return super.getId();

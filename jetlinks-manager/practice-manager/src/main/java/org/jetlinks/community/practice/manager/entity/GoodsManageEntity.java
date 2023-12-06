@@ -11,6 +11,7 @@ import org.hswebframework.web.crud.annotation.EnableEntityEvent;
 import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.utils.DigestUtils;
 import org.hswebframework.web.validator.CreateGroup;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -71,7 +72,7 @@ public class GoodsManageEntity extends GenericEntity<String> implements RecordCr
 
     @Override
     public String getId() {
-        if (super.getId() == null) {
+        if (super.getId() == null || (!StringUtils.hasText(super.getId()))) {
             generateId();
         }
         return super.getId();
