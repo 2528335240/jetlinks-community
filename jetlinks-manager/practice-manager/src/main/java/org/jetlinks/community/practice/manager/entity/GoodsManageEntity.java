@@ -48,6 +48,11 @@ public class GoodsManageEntity extends GenericEntity<String> implements RecordCr
     @Schema(description = "上架时间")
     private Long shelveTime;
 
+    @Column(nullable = false)
+    @GeneratedValue(generator = Generators.CURRENT_TIME)
+    @Schema(description = "商品所属订单id")
+    private Long orderId;
+
     @Column
     @Schema(description = "下架时间")
     private Long downShelveTime;

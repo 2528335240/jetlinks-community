@@ -41,10 +41,10 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     private String orderSerialNumber;
 
     @Column(length = 64, nullable = false,updatable = false)
-    @Schema(description = "商品ids")
+    @Schema(description = "商品集合")
     @ColumnType(javaType = String.class,jdbcType = JDBCType.LONGVARCHAR)
     @JsonCodec
-    private List<String> goodsIds;
+    private List<GoodsManageEntity> goodsList;
 
     @Column(length = 32, nullable = false)
     @Schema(description = "订单类型")
@@ -84,11 +84,11 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     }
 
     public void generateId() {
-        String id = generateHexId(orderSerialNumber, goodsIds);
+        String id = generateHexId(orderSerialNumber, goodsList);
         setId(id);
     }
 
-    public static String generateHexId(String orderSerialNumber, List<String> goodIds) {
-        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodIds.stream().collect(Collectors.joining(",","{","}"))));
+    public static String generateHexId(String orderSerialNumber, List<GoodsManageEntity> goodsList) {
+        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodsList.stream().map(item-> item.getId()).collect(Collectors.joining(",","{","}"))));
     }
 }
