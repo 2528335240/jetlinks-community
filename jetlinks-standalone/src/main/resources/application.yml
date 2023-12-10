@@ -221,7 +221,7 @@ springdoc:
         - org.jetlinks.community.logging.controller
     -  group: 练习模块相关接口
        packages-to-scan:
-        - org.jetlinks.community.practice.manager.controller
+        - org.jetlinks.community.practice.manager.web
 
   cache:
     disabled: false

@@ -13,14 +13,14 @@ import org.hswebframework.web.api.crud.entity.RecordModifierEntity;
 import org.hswebframework.web.crud.annotation.EnableEntityEvent;
 import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.utils.DigestUtils;
-
 import org.jetlinks.community.practice.manager.enums.OrderStatus;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import java.sql.JDBCType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 订单管理类，用于封装订单相关的信息,如流水号，订单类型，订单状态等
@@ -40,11 +40,11 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String orderSerialNumber;
 
-    @Column(length = 64, nullable = false,updatable = false)
-    @Schema(description = "商品集合")
+    @Column(length = 64, updatable = false)
+    @Schema(description = "商品id")
     @ColumnType(javaType = String.class,jdbcType = JDBCType.LONGVARCHAR)
     @JsonCodec
-    private List<GoodsManageEntity> goodsList;
+    private String goodsId;
 
     @Column(length = 32, nullable = false)
     @Schema(description = "订单类型")
@@ -77,6 +77,7 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
 
     @Override
     public String getId() {
+
         if (super.getId() == null || (!StringUtils.hasText(super.getId()))) {
             generateId();
         }
@@ -84,11 +85,12 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
     }
 
     public void generateId() {
-        String id = generateHexId(orderSerialNumber, goodsList);
+        String id = generateHexId(orderSerialNumber, goodsId);
         setId(id);
     }
 
-    public static String generateHexId(String orderSerialNumber, List<GoodsManageEntity> goodsList) {
-        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodsList.stream().map(item-> item.getId()).collect(Collectors.joining(",","{","}"))));
+    public static String generateHexId(String orderSerialNumber, String goodsIds) {
+
+        return DigestUtils.md5Hex(String.join(orderSerialNumber, "|", goodsIds));
     }
 }

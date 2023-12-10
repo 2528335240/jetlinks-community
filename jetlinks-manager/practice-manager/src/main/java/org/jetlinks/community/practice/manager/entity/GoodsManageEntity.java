@@ -29,7 +29,6 @@ import javax.validation.constraints.Pattern;
 @EnableEntityEvent
 public class GoodsManageEntity extends GenericEntity<String> implements RecordCreationEntity, RecordModifierEntity {
 
-
     @Column(length = 64, nullable = false)
     @Schema(description = "商品名称")
     private String goodsName;
@@ -47,11 +46,6 @@ public class GoodsManageEntity extends GenericEntity<String> implements RecordCr
     @GeneratedValue(generator = Generators.CURRENT_TIME)
     @Schema(description = "上架时间")
     private Long shelveTime;
-
-    @Column(nullable = false)
-    @GeneratedValue(generator = Generators.CURRENT_TIME)
-    @Schema(description = "商品所属订单id")
-    private Long orderId;
 
     @Column
     @Schema(description = "下架时间")
