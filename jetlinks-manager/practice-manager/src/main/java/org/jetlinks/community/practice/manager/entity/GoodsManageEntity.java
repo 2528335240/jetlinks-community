@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
+import org.hswebframework.reactor.excel.CellDataType;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 import org.hswebframework.web.api.crud.entity.RecordCreationEntity;
 import org.hswebframework.web.api.crud.entity.RecordModifierEntity;
@@ -11,10 +12,12 @@ import org.hswebframework.web.crud.annotation.EnableEntityEvent;
 import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.utils.DigestUtils;
 import org.hswebframework.web.validator.CreateGroup;
+import org.jetlinks.community.io.excel.annotation.ExcelHeader;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -31,24 +34,29 @@ public class GoodsManageEntity extends GenericEntity<String> implements RecordCr
 
     @Column(length = 64, nullable = false)
     @Schema(description = "商品名称")
+    @ExcelHeader()
     private String goodsName;
 
     @Column(length = 64,nullable = false)
     @Schema(description = "商品类型")
+    @ExcelHeader
     private String goodsType;
 
     @Column(length = 64,nullable = false)
     @Pattern(regexp = "[A-Za-z]{3}@[0-9]{2}", message = "批次格式只能是3位字母+@+2位数字", groups = CreateGroup.class)
     @Schema(description = "商品批次")
+    @ExcelHeader
     private String goodsBatch;
 
     @Column(nullable = false)
     @GeneratedValue(generator = Generators.CURRENT_TIME)
     @Schema(description = "上架时间")
+    @ExcelHeader(dataType = CellDataType.DATE_TIME,format = "yyyy-MM-dd HH:mm:ss")
     private Long shelveTime;
 
     @Column
     @Schema(description = "下架时间")
+    @ExcelHeader(dataType = CellDataType.DATE_TIME,format = "yyyy-MM-dd HH:mm:ss")
     private Long downShelveTime;
 
     @Column(length = 64, nullable = false, updatable = false)
