@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hswebframework.ezorm.core.param.QueryParam;
 import org.hswebframework.web.crud.events.EntityBeforeQueryEvent;
-import org.jetlinks.community.gateway.annotation.Subscribe;
+import org.hswebframework.web.crud.events.EntityModifyEvent;
 import org.jetlinks.community.practice.manager.entity.OrderManageEntity;
 import org.jetlinks.core.event.EventBus;
 import org.jetlinks.core.event.Subscription;
@@ -14,8 +14,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import java.util.stream.Collectors;
 
 /**
  * @author Wen-Tao
@@ -28,8 +27,9 @@ import javax.annotation.PreDestroy;
 public class EventBusHandle {
 
     private final EventBus eventBus;
-    private final String TOPIC_SELECT="/order/crud/getList";
-    @EventListener
+    public final  static  String TOPIC_SELECT="/order/crud/getList";
+    public final static String TOPIC_PAY_ORDER="/pay_order/update";
+//    @EventListener
     public void springHandleEvent(EntityBeforeQueryEvent<OrderManageEntity> event){
         event.async(this.sendNotify(event.getParam()));
     }
@@ -42,17 +42,33 @@ public class EventBusHandle {
             .then();
 
     }
+
+    @EventListener
+    public void payOrderHandleEvent(EntityModifyEvent<OrderManageEntity> event){
+        log.info("-----------------有新的订单信息改变-----------");
+        event.async(Mono
+            .just(event.getAfter().stream().filter(item-> "paid".equals(item.getStatus().getValue())).map(i->{
+                log.info("----------改变的订单id有{}-----",i.getId());
+               return i;
+            }).collect(Collectors.toList()).get(0))
+            .flatMap(e -> eventBus.publish(TOPIC_PAY_ORDER,e))
+            .then());
+    }
+
+
     //注解方式订阅事件总线消息
-    @Subscribe(TOPIC_SELECT)
+//    @Subscribe(TOPIC_SELECT)
     public Mono<Void> springHandleEventQuery(QueryParam queryParam){
         log.info("-----------------正在订阅事件-----------");
         log.info("内容为:{}",queryParam);
         return Mono.empty();
     }
 
+
+
     //通过eventBus进行总订阅
     private Disposable disposable;
-    @PostConstruct
+//    @PostConstruct
     public void init(){
 
         disposable=
@@ -73,7 +89,7 @@ public class EventBusHandle {
             );
     }
 
-    @PreDestroy
+//    @PreDestroy
     public void shutdown() {
         //取消订阅
         if (disposable != null) {
