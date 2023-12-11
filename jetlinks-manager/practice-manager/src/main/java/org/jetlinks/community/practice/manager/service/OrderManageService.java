@@ -23,7 +23,6 @@ public class OrderManageService extends GenericReactiveCrudService<OrderManageEn
     }
 
     public Mono<Integer> getNumByGoodsBatch(String goodsBatch) {
-
         return goodsService.createQuery()
             .where(GoodsManageEntity::getGoodsBatch,goodsBatch)
             .fetch()

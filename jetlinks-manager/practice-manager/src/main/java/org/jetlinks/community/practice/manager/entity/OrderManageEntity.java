@@ -3,6 +3,7 @@ package org.jetlinks.community.practice.manager.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.ezorm.rdb.mapping.annotation.EnumCodec;
@@ -31,6 +32,7 @@ import javax.persistence.Table;
 @Setter
 @Schema(description = "订单管理表")
 @EnableEntityEvent
+@ToString
 public class OrderManageEntity extends GenericEntity<String> implements RecordCreationEntity , RecordModifierEntity {
 
     @Column(length = 64, nullable = false,updatable = false)

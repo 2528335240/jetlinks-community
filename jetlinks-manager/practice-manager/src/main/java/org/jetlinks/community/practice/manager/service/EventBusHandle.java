@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PreDestroy;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +36,7 @@ public class EventBusHandle {
     }
 
     private Mono<Void> sendNotify(QueryParam param) {
-        log.info("-----------------正在发布事件-----------");
+        log.info("-----------------正在发布订单查询前事件-----------");
         return Mono
             .just(param)
             .flatMap(e -> eventBus.publish(TOPIC_SELECT,e))
@@ -48,7 +49,7 @@ public class EventBusHandle {
         log.info("-----------------有新的订单信息改变-----------");
         event.async(Mono
             .just(event.getAfter().stream().filter(item-> "paid".equals(item.getStatus().getValue())).map(i->{
-                log.info("----------改变的订单id有{}-----",i.getId());
+                log.info("----------改变的订单信息有{}-----",i);
                return i;
             }).collect(Collectors.toList()).get(0))
             .flatMap(e -> eventBus.publish(TOPIC_PAY_ORDER,e))
@@ -63,7 +64,6 @@ public class EventBusHandle {
         log.info("内容为:{}",queryParam);
         return Mono.empty();
     }
-
 
 
     //通过eventBus进行总订阅
@@ -89,7 +89,7 @@ public class EventBusHandle {
             );
     }
 
-//    @PreDestroy
+    @PreDestroy
     public void shutdown() {
         //取消订阅
         if (disposable != null) {

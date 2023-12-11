@@ -6,7 +6,6 @@ import org.hswebframework.web.crud.events.EntityBeforeSaveEvent;
 import org.hswebframework.web.exception.BusinessException;
 import org.jetlinks.community.practice.manager.entity.GoodsManageEntity;
 import org.jetlinks.community.practice.manager.entity.OrderManageEntity;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +24,7 @@ public class SpringEventHandle {
 
     private final GoodsManageService goodsManageService;
     //生成订单时检测是否有对应商品
-    @EventListener
+//    @EventListener
     public void checkGoodsIdExist(EntityBeforeSaveEvent<OrderManageEntity> event){
         log.warn("我来了");
         event.async(

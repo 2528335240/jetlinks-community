@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
 import org.jetlinks.community.gateway.external.SubscribeRequest;
 import org.jetlinks.community.gateway.external.SubscriptionProvider;
-import org.jetlinks.community.practice.manager.entity.GoodsManageEntity;
 import org.jetlinks.community.practice.manager.entity.OrderManageEntity;
 import org.jetlinks.community.practice.manager.service.EventBusHandle;
 import org.jetlinks.core.event.EventBus;
@@ -66,7 +65,7 @@ public class MyWebsocket implements SubscriptionProvider {
                     //订阅集群
                     .broker()
                     .build(),
-                GoodsManageEntity.class
+              OrderManageEntity.class
             )
         );
     }
