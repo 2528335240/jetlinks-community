@@ -1,8 +1,12 @@
 package org.jetlinks.community.practice.manager.service;
 
 import org.hswebframework.web.crud.service.GenericReactiveCrudService;
+import org.jetlinks.community.practice.manager.entity.GoodsManageEntity;
 import org.jetlinks.community.practice.manager.entity.OrderManageEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+import java.util.stream.Collectors;
 
 /**
  * @author Wen-Tao
@@ -18,63 +22,18 @@ public class OrderManageService extends GenericReactiveCrudService<OrderManageEn
         this.goodsService = goodsService;
     }
 
+    public Mono<Integer> getNumByGoodsBatch(String goodsBatch) {
 
+        return goodsService.createQuery()
+            .where(GoodsManageEntity::getGoodsBatch,goodsBatch)
+            .fetch()
+            .collectList()
+            .flatMap(goods->
+                         this.createQuery()
+                             .where()
+                             .in(OrderManageEntity::getGoodsId,goods.stream().map(GoodsManageEntity::getId).collect(Collectors.toList()))
+                             .count()
+            );
+    }
 
-//    public Flux<OrderManageEntity> getList(String orderSerialNumber){
-//      return  createQuery()
-//          .where()
-//          .$like$(OrderManageEntity::getOrderSerialNumber,orderSerialNumber)
-//          .fetch();
-//
-//
-//    }
-//
-//    public Mono<Integer> getCountOrderNumByGoodsBatch(String goodsBatch ){
-//      return goodsService.createQuery()
-//                   .where(GoodsManageEntity::getGoodsBatch,goodsBatch)
-//          .fetch()
-//          .map(GoodsManageEntity::g)
-//          .flatMap(e ->
-//             this.createQuery()
-//                 .where(OrderManageEntity::getId,e)
-//                 .fetch()
-//               )
-//          .distinct(OrderManageEntity::getId)
-//          .collectList()
-//          .map(List::size);
-//
-//    }
-//
-//    public Mono<Integer> generateOrder(OrderInfo orderInfo) {
-//
-//     return    goodsService.createQuery()
-//                    .where()
-//                    .in(GoodsManageEntity::getId,orderInfo.getGoodsIds())
-//                    .fetch().collectList()
-//                    .flatMap( list ->{
-//                        OrderInfo copy1 = FastBeanCopier.copy(orderInfo, OrderInfo.class);
-//                        copy1.setGoodsList(list);
-//                        OrderManageEntity orderManage = FastBeanCopier.copy(copy1, OrderManageEntity.class);
-//
-//                        List<GoodsManageEntity> goodsManageEntityList = list.stream().peek(item -> item.setOrderId(orderManage.getId())).collect(Collectors.toList());
-//                        orderManage.setGoodsList(goodsManageEntityList);
-//
-//                         goodsService.save(goodsManageEntityList).subscribe();
-//                        return     this.insert(orderManage);
-//                    });
-////                    .map(list->{
-////                        goodsService.save(list);
-//////                        goodsService.save(list);
-////                        orderInfo.setGoodsList(list);
-//////                        OrderManageEntity orderManage = FastBeanCopier.copy(orderInfo, OrderManageEntity.class);
-//////                       this.insert(orderManage);
-////F
-////                        return list;
-////                    });
-////
-////         return insert(FastBeanCopier.copy(orderInfo,OrderManageEntity.class));
-//
-//
-//
-//    }
 }

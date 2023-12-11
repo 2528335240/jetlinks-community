@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.ezorm.rdb.mapping.annotation.EnumCodec;
-import org.hswebframework.ezorm.rdb.mapping.annotation.JsonCodec;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 import org.hswebframework.web.api.crud.entity.RecordCreationEntity;
 import org.hswebframework.web.api.crud.entity.RecordModifierEntity;
@@ -20,7 +19,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import java.sql.JDBCType;
 
 /**
  * 订单管理类，用于封装订单相关的信息,如流水号，订单类型，订单状态等
@@ -42,8 +40,6 @@ public class OrderManageEntity extends GenericEntity<String> implements RecordCr
 
     @Column(length = 64, updatable = false)
     @Schema(description = "商品id")
-    @ColumnType(javaType = String.class,jdbcType = JDBCType.LONGVARCHAR)
-    @JsonCodec
     private String goodsId;
 
     @Column(length = 32, nullable = false)
