@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.stream.Collectors;
 
 /**
- * 注册与订单相关的事件
+ * 基于springEvent 注册与订单相关的事件
  * @author Wen-Tao
  * @see
  * @since 2.2
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class OrderHandle {
+public class SpringEventHandle {
 
     private final GoodsManageService goodsManageService;
     //生成订单时检测是否有对应商品
@@ -44,5 +44,28 @@ public class OrderHandle {
            );
     }
 
+
+//    private final EventBus eventBus;
+//    private final String TOPIC_SELECT="/order/crud/getList";
+//    @EventListener
+//    public void springHandleEvent(EntityBeforeQueryEvent<OrderManageEntity> event){
+//        event.async(this.sendNotify(event.getParam()));
+//    }
+//
+//    private Mono<Void> sendNotify(QueryParam param) {
+//        log.info("-----------------正在发布事件-----------");
+//        return Mono
+//            .just(param)
+//            .flatMap(e -> eventBus.publish(TOPIC_SELECT,e))
+//            .then();
+//
+//    }
+//    //注解方式订阅事件总线消息
+//    @Subscribe(TOPIC_SELECT)
+//    public Mono<Void> springHandleEventQuery(QueryParam queryParam){
+//        log.info("-----------------正在订阅事件-----------");
+//        log.info("内容为:{}",queryParam);
+//        return Mono.empty();
+//    }
 
 }
