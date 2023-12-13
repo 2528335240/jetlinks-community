@@ -10,13 +10,13 @@ import org.hswebframework.web.api.crud.entity.QueryParamEntity;
 import org.hswebframework.web.authorization.annotation.Resource;
 import org.hswebframework.web.crud.query.QueryHelper;
 import org.hswebframework.web.crud.web.reactive.ReactiveServiceCrudController;
+import org.jetlinks.community.practice.manager.config.TimerConfig;
 import org.jetlinks.community.practice.manager.entity.GoodsManageEntity;
 import org.jetlinks.community.practice.manager.entity.OrderDto;
 import org.jetlinks.community.practice.manager.entity.OrderManageEntity;
 import org.jetlinks.community.practice.manager.service.OrderManageService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.jetlinks.community.practice.manager.timers.OrderTimers;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 
@@ -33,6 +33,13 @@ import reactor.core.publisher.Mono;
 public class OrderManageController implements ReactiveServiceCrudController<OrderManageEntity,String> {
     private final OrderManageService service;
     private final QueryHelper queryHelper;
+
+    private final TimerConfig timerConfig;
+
+    private final OrderTimers orderTimers;
+
+
+
    @GetMapping("/getList")
    @Operation(summary = "条件分页查询订单信息")
     public Mono<PagerResult<OrderDto>> getList(@Parameter QueryParamEntity queryParam){
@@ -53,5 +60,22 @@ public class OrderManageController implements ReactiveServiceCrudController<Orde
        return service.getNumByGoodsBatch(goodsBatch);
 
     }
+
+    @GetMapping("/shoutDownTimer")
+    @Operation(summary = "停止定时器")
+    public Mono<Void> shoutDownTimer(){
+       return orderTimers.shutdown();
+    }
+
+    @PostMapping("/startTimer")
+    @Operation(summary = "启动定时器")
+    public Mono<Void> startTimer(@RequestBody TimerConfig timerConfigs) throws Exception {
+       timerConfig.setTimerSpec(timerConfigs.getTimerSpec());
+        orderTimers.run();
+        return Mono.empty();
+    }
+
+
+
 
 }

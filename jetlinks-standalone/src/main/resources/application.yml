@@ -230,3 +230,7 @@ network:
     - 1883-1890
     - 8800-8810
     - 5060-5061
+timer:
+  timerSpec:
+     cron: "0/59 * * * * ? "
+     trigger: "cron"
